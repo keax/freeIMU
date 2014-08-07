@@ -392,9 +392,16 @@ class SerialWorker(QThread):
       self.ser.write('b')
       self.ser.write(chr(count))
       for j in range(count):
-        for i in range(in_values):
-          reading[i] = unpack('h', self.ser.read(2))[0]
-        self.ser.read(2) # consumes remaining '\r\n'
+        c = ''
+        recv_buf = ''
+        while (c != '\n'):
+          c = self.ser.read()
+          if ((c!='\r') and (c!='\n')):
+            recv_buf += c
+        reading = []
+        for v in recv_buf.split():
+          reading.append(int(v))
+        print reading
         # prepare readings to store on file
         acc_readings_line = "%d %d %d\r\n" % (reading[0], reading[1], reading[2])
         self.acc_file.write(acc_readings_line)

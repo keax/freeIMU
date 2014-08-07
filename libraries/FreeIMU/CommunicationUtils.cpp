@@ -25,9 +25,12 @@ void serialFloatPrint(float f) {
 
 
 void writeArr(void * varr, uint8_t arr_length, uint8_t type_bytes) {
-  byte * arr = (byte*) varr;
-  for(uint8_t i=0; i<arr_length; i++) {
-    writeVar(&arr[i * type_bytes], type_bytes);
+  int* arr = (int*) varr;
+  int i;
+  for (i = 0; i < arr_length; i++)
+  {
+	  Serial.print(arr[i], DEC);
+	  Serial.print(" ");
   }
 }
 
