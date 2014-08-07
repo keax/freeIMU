@@ -385,7 +385,7 @@ class SerialWorker(QThread):
     print "sampling start.."
     self.acc_file = open(acc_file_name, 'w')
     self.magn_file = open(magn_file_name, 'w')
-    count = 100
+    count = 10
     in_values = 9
     reading = [0.0 for i in range(in_values)]
     while not self.exiting:
