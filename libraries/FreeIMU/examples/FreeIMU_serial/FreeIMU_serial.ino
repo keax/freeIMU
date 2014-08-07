@@ -18,9 +18,11 @@
 #include <Wire.h>
 #include <SPI.h>
 
+char serial_busy_wait();
 
 float q[4];
-int raw_values[9];
+int16_t raw_values16[11];
+int raw_values[11];
 float ypr[3]; // yaw pitch roll
 char str[256];
 float val[9];
@@ -35,9 +37,6 @@ void setup() {
   Serial.begin(115200);
   Wire.begin();
   my3IMU.init(true);
-  
-  // LED
-  pinMode(13, OUTPUT);
 }
 
 
@@ -65,12 +64,24 @@ void loop() {
           my3IMU.acc.readAccel(&raw_values[0], &raw_values[1], &raw_values[2]);
           my3IMU.gyro.readGyroRaw(&raw_values[3], &raw_values[4], &raw_values[5]);
         #else // MPU6050
-          my3IMU.accgyro.getMotion6(&raw_values[0], &raw_values[1], &raw_values[2], &raw_values[3], &raw_values[4], &raw_values[5]);
+          my3IMU.accgyro.getMotion6(&raw_values16[0], &raw_values16[1], &raw_values16[2], &raw_values16[3], &raw_values16[4], &raw_values16[5]);
+          raw_values[0] = raw_values16[0];
+          raw_values[1] = raw_values16[1];
+          raw_values[2] = raw_values16[2];
+          raw_values[3] = raw_values16[3];
+          raw_values[4] = raw_values16[4];
+          raw_values[5] = raw_values16[5];
+
         #endif
         writeArr(raw_values, 6, sizeof(int)); // writes accelerometer and gyro values
         #if IS_9DOM()
           my3IMU.magn.getValues(&raw_values[0], &raw_values[1], &raw_values[2]);
           writeArr(raw_values, 3, sizeof(int));
+        #else
+		  raw_values[0] = 1;
+		  raw_values[1] = 1;
+		  raw_values[2] = 1;
+		  writeArr(raw_values, 3, sizeof(int));
         #endif
         Serial.println();
       }
