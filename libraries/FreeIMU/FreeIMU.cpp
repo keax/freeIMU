@@ -28,7 +28,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #include "WireUtils.h"
 #include "DebugUtils.h"
 
-//#include "vector_math.h"
+#include "vector_math.h"
+
+#define GIRO_SENSITIVITY			50.0f
 
 FreeIMU::FreeIMU() {
   #if HAS_ADXL345()
@@ -365,7 +367,7 @@ void FreeIMU::getValues(float * values) {
         values[i] = (float) accgyroval[i];
       }
       else {
-        values[i] = ((float) accgyroval[i]) / 16.4f; // NOTE: this depends on the sensitivity chosen
+        values[i] = ((float) accgyroval[i]) / GIRO_SENSITIVITY; // NOTE: this depends on the sensitivity chosen
       }
     }
   #endif
@@ -495,9 +497,9 @@ void  FreeIMU::AHRSupdate(float gx, float gy, float gz, float ax, float ay, floa
   if(halfex != 0.0f && halfey != 0.0f && halfez != 0.0f) {
     // Compute and apply integral feedback if enabled
     if(twoKi > 0.0f) {
-      integralFBx += twoKi * halfex * (1.0f / sampleFreq);  // integral error scaled by Ki
-      integralFBy += twoKi * halfey * (1.0f / sampleFreq);
-      integralFBz += twoKi * halfez * (1.0f / sampleFreq);
+      integralFBx += twoKi * halfex * (sampleFreq);  // integral error scaled by Ki
+      integralFBy += twoKi * halfey * (sampleFreq);
+      integralFBz += twoKi * halfez * (sampleFreq);
       gx += integralFBx;  // apply integral feedback
       gy += integralFBy;
       gz += integralFBz;
@@ -515,9 +517,9 @@ void  FreeIMU::AHRSupdate(float gx, float gy, float gz, float ax, float ay, floa
   }
   
   // Integrate rate of change of quaternion
-  gx *= (0.5f * (1.0f / sampleFreq));   // pre-multiply common factors
-  gy *= (0.5f * (1.0f / sampleFreq));
-  gz *= (0.5f * (1.0f / sampleFreq));
+  gx *= (0.5f * (sampleFreq));   // pre-multiply common factors
+  gy *= (0.5f * (sampleFreq));
+  gz *= (0.5f * (sampleFreq));
   qa = q0;
   qb = q1;
   qc = q2;
@@ -555,7 +557,7 @@ void FreeIMU::getQ(float * q) {
   DEBUG_PRINT(val[8]);
   
   now = micros();
-  sampleFreq = 1.0 / ((now - lastUpdate) / 1000000.0);
+  sampleFreq = ((elapsedMicros(lastUpdate)) / 1000000.0);
   lastUpdate = now;
   
   // gyro values are expressed in deg/sec, the * M_PI/180 will convert it to radians/sec
