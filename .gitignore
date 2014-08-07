@@ -1,0 +1,11 @@
+*.log
+*.pyc
+processing/java/
+processing/lib/
+processing/modes/
+processing/processing
+processing/processing-java
+processing/revisions.txt
+processing/tools/
+processing/core/
+

@@ -1,3 +1,44 @@
+Fork of FreeIMU for embedded framework
+======================================
+
+This fork allows you to play with a MPU6050 on :
+* TI stellaris LM4F120XL.
+* STM32F0 Discovery (STM32F051)
+
+Prerequisite
+------------
+
+see prerequisites of embedded at https://github.com/r-3-t/embedded
+
+Build
+-----
+
+git submodule update --init --recursive
+
+cmake <freeIMU_for_embedded_path> -Dmcu=lm4f120xl
+
+make
+
+Run
+---
+
+openocd
+
+arm-none-eabi-gdb freeimu_serial
+
+> load
+
+> continue
+
+Tests
+-----
+
+Download and install processing (see http://www.varesano.net/projects/hardware/FreeIMU and https://www.processing.org)
+
+./processing/processing processing/FreeIMU_cube/FreeIMU_cube.pde
+
+Run
+
 freeIMU
 =======
 
