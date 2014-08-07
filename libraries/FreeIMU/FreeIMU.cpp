@@ -261,14 +261,14 @@ void FreeIMU::getQ_simple(float* q)
 static uint8_t location; // assuming ordered reads
 
 void eeprom_read_var(uint8_t size, byte * var) {
-  for(uint8_t i = 0; i<size; i++) {
+  /*for(uint8_t i = 0; i<size; i++) {
     var[i] = EEPROM.read(location + i);
   }
-  location += size;
+  location += size;*/
 }
 
 void FreeIMU::calLoad() {
-  if(EEPROM.read(FREEIMU_EEPROM_BASE) == FREEIMU_EEPROM_SIGNATURE) { // check if signature is ok so we have good data
+  /*if(EEPROM.read(FREEIMU_EEPROM_BASE) == FREEIMU_EEPROM_SIGNATURE) { // check if signature is ok so we have good data
     location = FREEIMU_EEPROM_BASE + 1; // reset location
     
     eeprom_read_var(sizeof(acc_off_x), (byte *) &acc_off_x);
@@ -287,7 +287,7 @@ void FreeIMU::calLoad() {
     eeprom_read_var(sizeof(magn_scale_y), (byte *) &magn_scale_y);
     eeprom_read_var(sizeof(magn_scale_z), (byte *) &magn_scale_z);
   }
-  else { // neutral values
+  else { // neutral values*/
     acc_off_x = 0;
     acc_off_y = 0;
     acc_off_z = 0;
@@ -301,7 +301,7 @@ void FreeIMU::calLoad() {
     magn_scale_x = 1;
     magn_scale_y = 1;
     magn_scale_z = 1;
-  }
+  //}
 }
 #endif
 

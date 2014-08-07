@@ -1,12 +1,14 @@
+#include <frontend_arduino.hpp>
 /**
+
  * FreeIMU library serial communication protocol
 */
 
-#include <ADXL345.h>
-#include <bma180.h>
-#include <HMC58X3.h>
-#include <ITG3200.h>
-#include <MS561101BA.h>
+//#include <ADXL345.h>
+//#include <bma180.h>
+//#include <HMC58X3.h>
+//#include <ITG3200.h>
+//#include <MS561101BA.h>
 #include <I2Cdev.h>
 #include <MPU60X0.h>
 #include <EEPROM.h>
@@ -91,28 +93,10 @@ void loop() {
       for(uint8_t i=0; i<count; i++) {
         my3IMU.getQ(q);
         serialPrintFloatArr(q, 4);
-        Serial.println("");
+        Serial.println();
       }
     }
-    #ifndef CALIBRATION_H
-    else if(cmd == 'c') {
-      const uint8_t eepromsize = sizeof(float) * 6 + sizeof(int) * 6;
-      while(Serial.available() < eepromsize) ; // wait until all calibration data are received
-      EEPROM.write(FREEIMU_EEPROM_BASE, FREEIMU_EEPROM_SIGNATURE);
-      for(uint8_t i = 1; i<(eepromsize + 1); i++) {
-        EEPROM.write(FREEIMU_EEPROM_BASE + i, (char) Serial.read());
-      }
-      my3IMU.calLoad(); // reload calibration
-      // toggle LED after calibration store.
-      digitalWrite(13, HIGH);
-      delay(1000);
-      digitalWrite(13, LOW);
-    }
-    else if(cmd == 'x') {
-      EEPROM.write(FREEIMU_EEPROM_BASE, 0); // reset signature
-      my3IMU.calLoad(); // reload calibration
-    }
-    #endif
+
     else if(cmd == 'C') { // check calibration values
       Serial.print("acc offset: ");
       Serial.print(my3IMU.acc_off_x);
@@ -177,20 +161,3 @@ char serial_busy_wait() {
 
 const int EEPROM_MIN_ADDR = 0;
 const int EEPROM_MAX_ADDR = 511;
-
-void eeprom_serial_dump_column() {
-  // counter
-  int i;
-
-  // byte read from eeprom
-  byte b;
-
-  // buffer used by sprintf
-  char buf[10];
-
-  for (i = EEPROM_MIN_ADDR; i <= EEPROM_MAX_ADDR; i++) {
-    b = EEPROM.read(i);
-    sprintf(buf, "%03X: %02X", i, b);
-    Serial.println(buf);
-  }
-}
