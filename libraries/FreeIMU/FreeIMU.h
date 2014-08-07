@@ -173,6 +173,7 @@ class FreeIMU
     #else
     void init(int accgyro_addr, bool fastmode);
     #endif
+    void getQ_simple(float* q);
     #ifndef CALIBRATION_H
     void calLoad();
     #endif
