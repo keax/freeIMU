@@ -37,7 +37,7 @@ import processing.serial.*;
 
 Serial myPort;  // Create object from Serial class
 
-final String serialPort = "/dev/ttyUSB9"; // replace this with your serial port. On windows you will need something like "COM1".
+final String serialPort = "/dev/ttyACM0"; // replace this with your serial port. On windows you will need something like "COM1".
 
 float [] q = new float [4];
 float [] hq = null;
@@ -61,7 +61,7 @@ void myDelay(int time) {
 void setup() 
 {
   size(VIEW_SIZE_X, VIEW_SIZE_Y, OPENGL);
-  myPort = new Serial(this, serialPort, 115200);
+  myPort = new Serial(this, serialPort, 9600);
   
   // The font must be located in the sketch's "data" directory to load successfully
   font = loadFont("CourierNew36.vlw"); 
