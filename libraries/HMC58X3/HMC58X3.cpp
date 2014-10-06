@@ -33,6 +33,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#include <DebugUtils.h>
 #define DEBUG_PRINT
 
+#define max(a,b) (((a) (b)) ? (a) : (b))
+#define min(a,b) (((a) < (b)) ? (a) : (b))
 
 /*!
     Counts/milli-gauss per gain for the self test bias current.
