@@ -162,8 +162,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // HMC5843 address is fixed so don't bother to define it
 
 
-#define twoKpDef  (2.0f * 0.5f) // 2 * proportional gain
+/*#define twoKpDef  (2.0f * 0.5f) // 2 * proportional gain
 #define twoKiDef  (2.0f * 0.1f) // 2 * integral gain
+*/
+#define twoKpDef  (2.0f * 1.0f) // 2 * proportional gain
+#define twoKiDef  (2.0f * 0.001f) // 2 * integral gain
+
 
 #ifndef cbi
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))

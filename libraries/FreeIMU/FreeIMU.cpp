@@ -564,10 +564,12 @@ void FreeIMU::getQ(float * q) {
   #if IS_9DOM()
     #if HAS_AXIS_ALIGNED()
       AHRSupdate(val[3] * M_PI/180, val[4] * M_PI/180, val[5] * M_PI/180, val[0], val[1], val[2], val[6], val[7], val[8]);
-    #elif (defined(SEN_10724) || defined(MPU6050_HMC5883L))
+    #elif (defined(SEN_10724))
       AHRSupdate(val[3] * M_PI/180, val[4] * M_PI/180, val[5] * M_PI/180, val[0], val[1], val[2], val[7], -val[6], val[8]);
     #elif defined(ARDUIMU_v3)
       AHRSupdate(val[3] * M_PI/180, val[4] * M_PI/180, val[5] * M_PI/180, val[0], val[1], val[2], -val[6], -val[7], val[8]);
+	#elif defined(MPU6050_HMC5883L)
+      AHRSupdate(val[3] * M_PI/180, val[4] * M_PI/180, val[5] * M_PI/180, val[0], val[1], val[2], val[7], -val[6], val[8]);
     #endif
   #else
     AHRSupdate(val[3] * M_PI/180, val[4] * M_PI/180, val[5] * M_PI/180, val[0], val[1], val[2]);
